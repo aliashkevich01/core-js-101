@@ -207,8 +207,21 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  if (width < 2 || height < 2) {
+    return false;
+  }
+  const symbol1 = '─';
+  const symbol2 = '│';
+  const symbol3 = '┌';
+  const symbol4 = '┐';
+  const symbol5 = '└';
+  const symbol6 = '┘';
+  const symbol7 = ' ';
+  const topLine = `${symbol3}${symbol1.repeat(width - 2)}${symbol4}\n`;
+  const midLine = `${symbol2}${symbol7.repeat(width - 2)}${symbol2}\n`;
+  const botLine = `${symbol5}${symbol1.repeat(width - 2)}${symbol6}\n`;
+  return topLine + midLine.repeat(height - 2) + botLine;
 }
 
 
@@ -284,8 +297,45 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  let adder = 0;
+  let multiplier = 0;
+  if (`${value[0]}${value[1]}` !== '10') {
+    switch (value[0]) {
+      case 'A': adder = 0; break;
+      case '2': adder = 1; break;
+      case '3': adder = 2; break;
+      case '4': adder = 3; break;
+      case '5': adder = 4; break;
+      case '6': adder = 5; break;
+      case '7': adder = 6; break;
+      case '8': adder = 7; break;
+      case '9': adder = 8; break;
+      case '1': adder = 9; break;
+      case 'J': adder = 10; break;
+      case 'Q': adder = 11; break;
+      case 'K': adder = 12; break;
+      default:
+    }
+    switch (value[1]) {
+      case '♣': multiplier = 0; break;
+      case '♦': multiplier = 1; break;
+      case '♥': multiplier = 2; break;
+      case '♠': multiplier = 3; break;
+      default:
+    }
+  } else {
+    adder = 9;
+    switch (value[2]) {
+      case '♣': multiplier = 0; break;
+      case '♦': multiplier = 1; break;
+      case '♥': multiplier = 2; break;
+      case '♠': multiplier = 3; break;
+      default:
+    }
+  }
+
+  return adder + multiplier * 13;
 }
 
 
